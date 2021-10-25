@@ -1,5 +1,5 @@
-class Merchant < ApplicationRecord
-  has_many :items
+class Item < ApplicationRecord
+  belongs_to :merchant
 
   def self.pagination(page = 1, per_page = 20)
     page = 1 if page < 1
