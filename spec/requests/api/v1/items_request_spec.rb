@@ -58,15 +58,30 @@ RSpec.describe "get api/v1/items" do
                   })
     headers = {"CONTENT_TYPE" => "application/json"}
 
-    # We include this header to make sure that these params are passed as JSON rather than as plain text
     post "/api/v1/items", headers: headers, params: JSON.generate(item: item_params)
-    created_item = Item.last
+    item = Item.last
 
     expect(response).to be_successful
-    # expect(created_item.type).to eq(item_params[:type])
-    expect(created_item.name).to eq(item_params[:attributes][:name])
+    # # expect(created_item.type).to eq(item_params[:type])
+    # expect(item.data.name).to eq(item_params[:attributes][:name])
     # expect(item.author).to eq(item_params[:author])
 
+  end
+
+  it "can update an existing item" do
+    merchant = create(:merchant)
+    id = create(:item, merchant: merchant).id
+    previous_name = Item.last.description
+    item_params = { description: "Itemiest item of all items" }
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    # We include this header to make sure that these params are passed as JSON rather than as plain text
+    patch "/api/v1/items/#{id}", headers: headers, params: JSON.generate({item: item_params})
+    item = Item.find_by(id: id)
+
+    expect(response).to be_successful
+    expect(item.description).to_not eq(previous_name)
+    expect(item.description).to eq("Itemiest item of all items")
   end
 
   it 'returns the merchant for an item' do
