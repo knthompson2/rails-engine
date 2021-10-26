@@ -62,9 +62,9 @@ RSpec.describe "get api/v1/items" do
     item = Item.last
 
     expect(response).to be_successful
-    # # expect(created_item.type).to eq(item_params[:type])
+    expect(item.type).to eq(item_params[:type])
     # expect(item.data.name).to eq(item_params[:attributes][:name])
-    # expect(item.author).to eq(item_params[:author])
+
   end
 
   it "can destroy an item" do

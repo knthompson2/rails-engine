@@ -59,4 +59,44 @@ RSpec.describe "get api/v1/merchants" do
     expect(items[:data].first[:attributes]).to have_key(:unit_price)
     expect(items[:data].first[:attributes]).to have_key(:merchant_id)
   end
+
+  it 'finds a merchant by name search' do
+    merchant = create(:merchant, name: "Cool Shirts")
+    merchant_2 = create(:merchant, name: "Lame Shirts")
+
+    get "/api/v1/merchants/find", params: {name: "cool"}
+
+    expect(response).to be_successful
+  end
+
+  it 'returns a quantity of merchants sorted by desc revenue' do
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    merchant3 = create(:merchant)
+
+    customer1 = create(:customer)
+
+    item1 = create(:item, merchant_id: merchant1.id)
+    item2 = create(:item, merchant_id: merchant1.id)
+    item3 = create(:item, merchant_id: merchant2.id)
+    item4 = create(:item, merchant_id: merchant2.id)
+    item5 = create(:item, merchant_id: merchant3.id)
+    item6 = create(:item, merchant_id: merchant3.id)
+
+    invoice1 = create(:invoice, customer_id: customer1.id, merchant_id: merchant1.id)
+    invoice2 = create(:invoice, customer_id: customer1.id, merchant_id: merchant2.id)
+
+    invoice_item1 = create(:invoice_item, item_id: item1.id, invoice_id: invoice1.id)
+    invoice_item2 = create(:invoice_item, item_id: item2.id, invoice_id: invoice1.id)
+    invoice_item3 = create(:invoice_item, item_id: item3.id, invoice_id: invoice2.id)
+
+    transaction1 = create(:transaction, invoice_id: invoice1.id, result: 0)
+    transaction2 = create(:transaction, invoice_id: invoice2.id, result: 0)
+
+    get "/api/v1/merchants/most_items", params: { quantity: 2 }
+    binding.pry
+    expect(response).to be_successful
+
+    merchants = JSON.parse(response.body, symbolize_names: true)
+  end
 end
