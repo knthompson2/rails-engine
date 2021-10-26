@@ -65,7 +65,19 @@ RSpec.describe "get api/v1/items" do
     # # expect(created_item.type).to eq(item_params[:type])
     # expect(item.data.name).to eq(item_params[:attributes][:name])
     # expect(item.author).to eq(item_params[:author])
+  end
 
+  it "can destroy an item" do
+    merchant = create(:merchant)
+    item = create(:item, merchant: merchant)
+
+    expect(Item.count).to eq(1)
+
+    delete "/api/v1/items/#{item.id}"
+
+    expect(response).to be_successful
+    expect(Item.count).to eq(0)
+    expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
 
   it "can update an existing item" do
