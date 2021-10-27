@@ -9,6 +9,5 @@ class Api::V1::Revenue::ItemsController < ApplicationController
     else
       render json: { error: "bad-request"}, status: 400
     end
-
   end
 end
