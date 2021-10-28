@@ -1,24 +1,31 @@
-# README
+# Rails Engine
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Table of Contents
 
-Things you may want to cover:
+- [Technologies Used](#technologies-used)
+- [Minimum Requirements](#minimum-requirements)
+- [Project Background](#project-background)
+- [Database Schema](#database-schema)
+- [Contributors](#contributors)
 
-* Ruby version
+## Technologies Used
 
-* System dependencies
+- Rails 5.2.6
+- Ruby 2.7.2
+- PostgreSQL 13.3
+- Gems: FactoryBot, Faker, Pry, RSpec, RuboCop, Shoulda-Matchers, SimpleCov
+- Processes: OOP, TDD, MVC, REST
 
-* Configuration
+## Project Background
+This project was developed by Kelsey Thompson during Mod 3 of Turing School's Back-End Engineering program. The project was completed in 7 days. 
 
-* Database creation
+The project description and base requirements can be found [here](https://backend.turing.edu/module3/projects/rails_engine)
 
-* Database initialization
+## Database Schema
+![Screen Shot 2021-09-22 at 3 35 38 PM](https://user-images.githubusercontent.com/83930724/134426313-23d19857-c6e9-44da-b368-d66ea26c7ce9.png)
 
-* How to run the test suite
+## Contributors
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+👤  **Kelsey Thompson**
+- [GitHub](https://github.com/knthompson2)
+- [LinkedIn](https://www.linkedin.com/in/knthompson2/)
