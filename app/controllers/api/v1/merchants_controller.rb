@@ -15,7 +15,7 @@ class Api::V1::MerchantsController < ApplicationController
 
   def find
     if params[:name]
-      merchant = Merchant.find_merchant_by_name(params[:name]).first
+      merchant = Merchant.find_merchant_by_name(params[:name])
       render json: MerchantSerializer.new(merchant), status: 200
     else
       render json: {error: "bad-request"}, status: 400

@@ -1,6 +1,6 @@
 class Merchant < ApplicationRecord
   extend Pagination
-  
+
   validates_presence_of :name
   has_many :items, dependent: :destroy
   has_many :invoice_items, through: :items
@@ -8,7 +8,8 @@ class Merchant < ApplicationRecord
 
   def self.find_merchant_by_name(name)
     where("name ILIKE ?", "%#{name}%")
-    .order("lower(name)")
+    .order("name")
+    .first
   end
 
   def self.top_merchants_items(limit = 5)

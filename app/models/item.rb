@@ -1,6 +1,6 @@
 class Item < ApplicationRecord
   extend Pagination
-  
+
   validates_presence_of :name
   validates_presence_of :description
   validates_presence_of :unit_price
@@ -11,7 +11,7 @@ class Item < ApplicationRecord
 
   def self.find_by_name(name)
     where("name ILIKE ?", "%#{name}%")
-    .order("lower(name)")
+    .order("name")
   end
 
   def self.find_by_price(min, max)
