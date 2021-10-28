@@ -95,6 +95,28 @@ RSpec.describe "get api/v1/merchants" do
     expect(merchant[:data][:attributes][:name]).to eq(merch.name)
   end
 
+  it 'returns null when cant finds a merchant by name search' do
+    merchant = create(:merchant, name: "Cool Shirts")
+    merchant_2 = create(:merchant, name: "Lame Shirts")
+     merch = Merchant.find(merchant.id)
+
+    get "/api/v1/merchants/find", params: {name: "zebra"}
+    merchant = JSON.parse(response.body, symbolize_names: true)
+
+
+    expect(response).to be_successful
+    expect(merchant).to be_a(Hash)
+    expect(merchant).to have_key(:data)
+    expect(merchant[:data]).to be_a(Hash)
+    expect(merchant[:data]).to have_key(:id)
+    expect(merchant[:data][:id]).to eq(nil)
+    expect(merchant[:data]).to have_key(:type)
+    expect(merchant[:data]).to have_key(:attributes)
+    expect(merchant[:data][:attributes]).to have_key(:name)
+    expect(merchant[:data][:attributes][:name]).to eq(nil)
+  end
+
+
   it 'tests the sad path: finds a merchant by name search' do
     merchant = create(:merchant, name: "Cool Shirts")
     merchant_2 = create(:merchant, name: "Lame Shirts")

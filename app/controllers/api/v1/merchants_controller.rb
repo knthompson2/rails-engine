@@ -16,7 +16,6 @@ class Api::V1::MerchantsController < ApplicationController
   def find
     if params[:name] && !params[:name].empty?
       merchant = Merchant.find_merchant_by_name(params[:name])
-      binding.pry
         if merchant != []
           render json: MerchantSerializer.new(merchant.first), status: 200
         else
