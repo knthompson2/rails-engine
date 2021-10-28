@@ -1,4 +1,6 @@
 class Item < ApplicationRecord
+  extend Pagination
+  
   validates_presence_of :name
   validates_presence_of :description
   validates_presence_of :unit_price
@@ -6,14 +8,6 @@ class Item < ApplicationRecord
   belongs_to :merchant
   has_many :invoice_items, dependent: :destroy
   has_many :invoices, through: :invoice_items
-
-
-
-  def self.pagination(page = 1, per_page = 20)
-    page = 1 if page < 1
-    per_page = 20 if per_page < 1
-    limit(per_page).offset((page - 1) * per_page)
-  end
 
   def self.find_by_name(name)
     where("name ILIKE ?", "%#{name}%")
