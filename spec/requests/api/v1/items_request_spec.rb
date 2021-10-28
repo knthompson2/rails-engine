@@ -222,7 +222,7 @@ RSpec.describe "get api/v1/items" do
     expect(items[:data].first[:attributes]).to have_key(:merchant_id)
   end
 
-  it 'will return a list of items by min or max search' do
+  it 'will return a list of items by min search' do
     merchant1 = create(:merchant)
     customer1 = create(:customer)
     item1 = create(:item, merchant_id: merchant1.id)
@@ -240,6 +240,72 @@ RSpec.describe "get api/v1/items" do
     transaction2 = create(:transaction, invoice_id: invoice2.id, result: "success")
 
     get "/api/v1/items/find_all", params: { min: "#{item1.unit_price}"}
+    items = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to be_successful
+    expect(items).to be_a(Hash)
+    expect(items).to have_key(:data)
+    expect(items[:data]).to be_a(Array)
+    expect(items[:data].first).to have_key(:id)
+    expect(items[:data].first).to have_key(:type)
+    expect(items[:data].first).to have_key(:attributes)
+    expect(items[:data].first[:attributes]).to have_key(:name)
+    expect(items[:data].first[:attributes]).to have_key(:description)
+    expect(items[:data].first[:attributes]).to have_key(:unit_price)
+    expect(items[:data].first[:attributes]).to have_key(:merchant_id)
+  end
+
+  it 'will return a list of items by max search' do
+    merchant1 = create(:merchant)
+    customer1 = create(:customer)
+    item1 = create(:item, merchant_id: merchant1.id)
+    item2 = create(:item, merchant_id: merchant1.id)
+    item3 = create(:item, merchant_id: merchant1.id)
+    item4 = create(:item, merchant_id: merchant1.id)
+    item5 = create(:item, merchant_id: merchant1.id)
+    item6 = create(:item, merchant_id: merchant1.id)
+    invoice1 = create(:invoice, customer_id: customer1.id, merchant_id: merchant1.id)
+    invoice2 = create(:invoice, customer_id: customer1.id, merchant_id: merchant1.id)
+    invoice_item1 = create(:invoice_item, item_id: item1.id, invoice_id: invoice1.id, quantity: 10, unit_price: 2.00)
+    invoice_item2 = create(:invoice_item, item_id: item2.id, invoice_id: invoice1.id, quantity: 10, unit_price: 5.00)
+    invoice_item3 = create(:invoice_item, item_id: item3.id, invoice_id: invoice2.id, quantity: 5, unit_price: 3.00)
+    transaction1 = create(:transaction, invoice_id: invoice1.id, result: "success")
+    transaction2 = create(:transaction, invoice_id: invoice2.id, result: "success")
+
+    get "/api/v1/items/find_all", params: { max: "#{item1.unit_price}"}
+    items = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to be_successful
+    expect(items).to be_a(Hash)
+    expect(items).to have_key(:data)
+    expect(items[:data]).to be_a(Array)
+    expect(items[:data].first).to have_key(:id)
+    expect(items[:data].first).to have_key(:type)
+    expect(items[:data].first).to have_key(:attributes)
+    expect(items[:data].first[:attributes]).to have_key(:name)
+    expect(items[:data].first[:attributes]).to have_key(:description)
+    expect(items[:data].first[:attributes]).to have_key(:unit_price)
+    expect(items[:data].first[:attributes]).to have_key(:merchant_id)
+  end
+
+  it 'will return a list of items by max and min search' do
+    merchant1 = create(:merchant)
+    customer1 = create(:customer)
+    item1 = create(:item, merchant_id: merchant1.id)
+    item2 = create(:item, merchant_id: merchant1.id)
+    item3 = create(:item, merchant_id: merchant1.id)
+    item4 = create(:item, merchant_id: merchant1.id)
+    item5 = create(:item, merchant_id: merchant1.id)
+    item6 = create(:item, merchant_id: merchant1.id)
+    invoice1 = create(:invoice, customer_id: customer1.id, merchant_id: merchant1.id)
+    invoice2 = create(:invoice, customer_id: customer1.id, merchant_id: merchant1.id)
+    invoice_item1 = create(:invoice_item, item_id: item1.id, invoice_id: invoice1.id, quantity: 10, unit_price: 2.00)
+    invoice_item2 = create(:invoice_item, item_id: item2.id, invoice_id: invoice1.id, quantity: 10, unit_price: 5.00)
+    invoice_item3 = create(:invoice_item, item_id: item3.id, invoice_id: invoice2.id, quantity: 5, unit_price: 3.00)
+    transaction1 = create(:transaction, invoice_id: invoice1.id, result: "success")
+    transaction2 = create(:transaction, invoice_id: invoice2.id, result: "success")
+
+    get "/api/v1/items/find_all", params: { max: "#{item1.unit_price}", min: "#{item3.unit_price}"}
     items = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful

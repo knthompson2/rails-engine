@@ -9,7 +9,6 @@ class Merchant < ApplicationRecord
   def self.find_merchant_by_name(name)
     where("name ILIKE ?", "%#{name}%")
     .order("name")
-    .first
   end
 
   def self.top_merchants_items(limit = 5)
